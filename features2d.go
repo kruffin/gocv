@@ -270,3 +270,37 @@ func getKeyPoints(ret C.KeyPoints) []KeyPoint {
 	}
 	return keys
 }
+
+// FlannBasedMatcher is a wrapper around the cv::FlannBasedMatcher.
+type FlannBasedMatcher struct {
+	// C.FlannBasedMatcher
+	p unsafe.Pointer
+}
+
+func NewFlannBasedMatcher() FlannBasedMatcher {
+	return FlannBasedMatcher{p: unsafe.Pointer(C.FlannBasedMatcher_Create())}
+}
+
+func (fm *FlannBasedMatcher) Match(src Mat, object Mat, mask Mat) []DMatch {
+	ret := C.FlannBasedMatcher_Match((C.FlannBasedMatcher)(fm.p), src.p, object.p, mask.p)
+	defer C.DMatches_Close(ret)
+
+	return getDMatches(ret)
+}
+
+func getDMatches(ret C.DMatches) []DMatch {
+	cArray := ret.matches
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len: length,
+		Cap: length,
+	}
+	s := *(*[]C.DMatch)(unsafe.Pointer(&hdr))
+
+	ms := make([]DMatch, length)
+	for i, _ := range s {
+		ms[i] = DMatch{p: unsafe.Pointer(&s[i]),}
+	}
+	return ms
+}

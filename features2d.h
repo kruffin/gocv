@@ -15,6 +15,8 @@ typedef cv::Ptr<cv::BRISK>* BRISK;
 typedef cv::Ptr<cv::FastFeatureDetector>* FastFeatureDetector;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
+
+typedef cv::Ptr<cv::FlannBasedMatcher>* FlannBasedMatcher;
 #else
 typedef void* AKAZE;
 typedef void* AgastFeatureDetector;
@@ -22,6 +24,8 @@ typedef void* BRISK;
 typedef void* FastFeatureDetector;
 typedef void* ORB;
 typedef void* SimpleBlobDetector;
+
+typedef void* FlannBasedMatcher;
 #endif
 
 AKAZE AKAZE_Create();
@@ -50,6 +54,11 @@ struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc);
 SimpleBlobDetector SimpleBlobDetector_Create();
 void SimpleBlobDetector_Close(SimpleBlobDetector b);
 struct KeyPoints SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src);
+
+FlannBasedMatcher FlannBasedMatcher_Create();
+void FlannBasedMatcher_Close(FlannBasedMatcher m);
+struct DMatches FlannBasedMatcher_Match(FlannBasedMatcher m, Mat src, Mat object, Mat mask);
+
 
 #ifdef __cplusplus
 }

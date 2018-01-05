@@ -129,9 +129,13 @@ typedef struct Moment {
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
 typedef cv::TermCriteria* TermCriteria;
+
+typedef cv::DMatch DMatch;
 #else
 typedef void* Mat;
 typedef void* TermCriteria;
+
+typedef void DMatch;
 #endif
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
@@ -140,6 +144,11 @@ typedef struct Mats {
   int length;
 } Mats;
 
+typedef struct DMatches {
+  DMatch* matches;
+  int length;
+} DMatches;
+
 struct ByteArray toByteArray(const char* buf, int len);
 void ByteArray_Release(struct ByteArray buf);
 
@@ -147,6 +156,14 @@ void Contours_Close(struct Contours cs);
 void KeyPoints_Close(struct KeyPoints ks);
 void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
+
+void DMatches_Close(struct DMatches matches);
+DMatch* DMatch_New();
+void DMatch_Close(DMatch* dm);
+int DMatch_GetTrainIdx(DMatch* dm);
+int DMatch_GetImgIdx(DMatch* dm);
+int DMatch_GetQueryIdx(DMatch* dm);
+float DMatch_GetDistance(DMatch* dm);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);

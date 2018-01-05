@@ -409,6 +409,49 @@ type KeyPoint struct {
 	Octave, ClassID       int
 }
 
+// DMatch is a data structure wrapper for key point descriptor matches.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d4/de0/classcv_1_1DMatch.html
+type DMatch struct {
+	p unsafe.Pointer
+}
+
+// NewDMatch returns a new empty DMatch.
+func NewDMatch() DMatch {
+	return DMatch{p: C.DMatch_New()}
+}
+
+// Gets the train index for the match.
+func (dm *DMatch) TrainIdx() int {
+	return int(C.DMatch_GetTrainIdx(dm.p))
+}
+
+// Gets the image index for the match.
+func (dm *DMatch) ImgIdx() int {
+	return int(C.DMatch_GetImgIdx(dm.p))
+}
+
+// Gets the query index for the match.
+func (dm *DMatch) QueryIdx() int {
+	return int(C.DMatch_GetQueryIdx(dm.p))
+}
+
+// Gets the calculated distance of the match.
+func (dm *DMatch) Distance() float64 {
+	return float64(C.DMatch_GetDistance(dm.p))
+}
+
+func (dm *DMatch) Close() {
+	C.DMatch_Close(dm.p)
+	dm.p = nil
+}
+
+func (dm *DMatch) Empty() bool {
+	return dm.p == nil
+}
+
+
 func toByteArray(b []byte) C.struct_ByteArray {
 	return C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),

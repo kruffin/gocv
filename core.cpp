@@ -182,6 +182,32 @@ void ByteArray_Release(struct ByteArray buf) {
     delete[] buf.data;
 }
 
+DMatch* DMatch_New() {
+    return new cv::DMatch();
+}
+void DMatch_Close(DMatch* dm) {
+    delete dm;
+}
+void DMatches_Close(struct DMatches matches) {
+    // for (int i = 0; i < matches.length; ++i) {
+    //     delete matches.matches[i];
+    // }
+    delete matches.matches;
+}
+
+int DMatch_GetTrainIdx(DMatch* dm) {
+    return dm->trainIdx;
+}
+int DMatch_GetImgIdx(DMatch* dm) {
+    return dm->imgIdx;
+}
+int DMatch_GetQueryIdx(DMatch* dm) {
+    return dm->queryIdx;
+}
+float DMatch_GetDistance(DMatch* dm) {
+    return dm->distance;
+}
+
 struct ByteArray toByteArray(const char* buf, int len) {
     ByteArray ret = {new char[len], len};
     memcpy(ret.data, buf, len);

@@ -8,4 +8,4 @@
 // For further details, please see:
 // http://docs.opencv.org/3.3.1/d1/dfb/intro.html
 //
-package gocv // import "gocv.io/x/gocv"
+package gocv // import "github.com/kruffin/gocv"
